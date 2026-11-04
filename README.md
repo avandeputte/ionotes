@@ -88,8 +88,10 @@ Accounts are the **ioThing suite's shared accounts** (the `iothing-auth` library
 iopix and ioContacts), so one name, password and session serve every app, and someone signed in at
 `photo.example.com` is signed in at `notes.example.com` too when the apps share a domain (`IOTHING_COOKIE_DOMAIN`).
 What is ionotes' own is kept per app: the role an account holds here and its settings. A *suite admin* is admin in
-every app. Point ionotes at that database with `IOTHING_AUTH_DB_HOST`, `IOTHING_AUTH_DB_NAME`, `IOTHING_AUTH_DB_USER`
-and `IOTHING_AUTH_DB_PASSWORD` in `ionotes.env` (the tables are created at start; `iothing-auth migrate --ionotes`
+every app. That database is the **Shared ioSuite database** (accounts, sessions, roles, app passwords, the suite-wide
+settings and the list of apps; default name and user `iosuite`). Point ionotes at it with `IOSUITE_SHARED_DB_HOST`,
+`IOSUITE_SHARED_DB_NAME`, `IOSUITE_SHARED_DB_USER` and `IOSUITE_SHARED_DB_PASSWORD` in `ionotes.env` (the older names
+`IOTHING_AUTH_DB_*` still work; the tables are created at start; `iothing-auth migrate --ionotes`
 folds a 1.0 install's `user_accounts` table into it). Out of the box ionotes is open to anyone who can reach it;
 `setup.sh` (or `ADMIN_USER` / `ADMIN_PASSWORD`, or the person icon in the web app) creates the admin. Once an
 account exists:
@@ -133,7 +135,7 @@ buffer that path.
 When the proxy already makes people sign in, ionotes takes that sign-in, exactly as iopix does: the proxy passes who
 signed in in a header, and ionotes treats that person as signed in when an account exists for them (matched on the
 account's email address, then its name). Settings › Users and sign-in › Sign-in at the proxy (saved there, the settings are kept in the
-shared auth database for the whole suite: one Cloudflare Access application covering every app, set up once), or
+Shared ioSuite database for the whole suite: one Cloudflare Access application covering every app, set up once), or
 in `ionotes.env`, which wins:
 
 | Variable | |
@@ -216,7 +218,7 @@ Maintenance › Import): records keep their ids, and a newer copy on the server 
 | `DATA_DIR` | `./data` | the log (`ionotes.log`) and the database settings saved from the web app |
 | `APP_URL` | `http://localhost:8610` | the address ionotes is reached at, for links in MCP answers and the suite's list of apps |
 | `ADMIN_USER` / `ADMIN_PASSWORD` | | the first admin, created on a first start with no accounts |
-| `IOTHING_AUTH_DB_HOST` / `_PORT` / `_NAME` / `_USER` / `_PASSWORD` | `127.0.0.1` / `3306` / `auth` / `auth` / `auth` | the suite's shared account database (MariaDB) |
+| `IOSUITE_SHARED_DB_HOST` / `_PORT` / `_NAME` / `_USER` / `_PASSWORD` | `127.0.0.1` / `3306` / `iosuite` / `iosuite` / `iosuite` | the Shared ioSuite database (MariaDB): accounts, sessions, roles, suite-wide settings and the list of apps. The older names `IOTHING_AUTH_DB_*` still work |
 | `IOTHING_COOKIE_DOMAIN` | | the domain the session cookie is shared on (e.g. `example.com`); a LAN address outside it gets a cookie of its own |
 | `READ_ONLY` | `0` | nothing can be changed, by anyone |
 | `OCR` | `1` | `0`: the server never reads text in pictures (the apps still do) |

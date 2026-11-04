@@ -57,7 +57,7 @@ async def api_settings_set(request: Request):
             if k == "require_login":
                 if v and not users.any_users():
                     raise HTTPException(400, "Create an account first, or nobody could sign in")
-                users.set_require_login(bool(v))  # in the auth database, per app
+                users.set_require_login(bool(v))  # in the Shared ioSuite database, per app
                 continue
             db.set_setting(k, "1" if v else "0")
         elif k in TEXTS:
