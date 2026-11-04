@@ -89,7 +89,7 @@ checked for syntax in CI and drive the tested `setup.sh`; they have not been run
 ## Users and permissions
 
 Accounts are the **ioThing suite's shared accounts**, kept in the **Shared ioSuite database** (a MariaDB database
-shared with iopix and ioContacts, used through the `iothing-auth` library; besides the accounts it holds sessions,
+shared with iopix and ioContacts, used through the ioSuite shared library, [`iosuite-shared`](https://github.com/avandeputte/iosuite-shared) (package and module still `iothing-auth` / `iothing_auth`); besides the accounts it holds sessions,
 roles, the suite's list of apps and the suite-wide settings), so one name, password and session serve every app, and
 someone signed in at `photo.example.com` is signed in at `notes.example.com` too when the apps share a domain
 (`IOTHING_COOKIE_DOMAIN`). What is ionotes' own is kept per app: the role an account holds here and its settings. A
